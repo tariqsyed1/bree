@@ -2,6 +2,7 @@ import { APIGatewayEvent } from 'aws-lambda';
 import { createApplicationHandler } from './handlers/createApplicationHandler';
 import { disburseFundsHandler } from './handlers/disburseFundsHandler';
 import { repayApplicationHandler } from './handlers/repayApplicationHandler';
+import { cancelApplicationHandler } from './handlers/cancelApplicationHandler';
 
 export const handler = async (event: APIGatewayEvent) => {
   console.log('Received request:', event.httpMethod, event.path);
@@ -14,6 +15,8 @@ export const handler = async (event: APIGatewayEvent) => {
         return await disburseFundsHandler(event);
       case event.path === '/repayApplication' && event.httpMethod === 'POST':
         return await repayApplicationHandler(event);
+      case event.path === '/cancelApplication' && event.httpMethod === 'POST':
+        return await cancelApplicationHandler(event);
       default:
         return {
           statusCode: 404,
