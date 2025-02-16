@@ -1,28 +1,27 @@
-import { APIGatewayEvent, Context, Callback } from 'aws-lambda';
+import { APIGatewayEvent } from 'aws-lambda';
 import { createApplicationHandler } from './handlers/createApplicationHandler';
+import { disburseFundsHandler } from './handlers/disburseFundsHandler';
+import { repayApplicationHandler } from './handlers/repayApplicationHandler';
 
-export const handler = async (event: APIGatewayEvent, context: Context, callback: Callback) => {
-  console.log('Incoming request:', event);
-
-  const { path, httpMethod } = event;
+export const handler = async (event: APIGatewayEvent) => {
+  console.log('Received request:', event.httpMethod, event.path);
 
   try {
     switch (true) {
-      case path === '/createApplication' && httpMethod === 'POST':
+      case event.path === '/createApplication' && event.httpMethod === 'POST':
         return await createApplicationHandler(event);
-
-      // Add more cases here for future endpoints
-      // case path === '/disburseFunds' && httpMethod === 'POST':
-      //   return await disburseFundsHandler(event);
-
+      case event.path === '/disburseFunds' && event.httpMethod === 'POST':
+        return await disburseFundsHandler(event);
+      case event.path === '/repayApplication' && event.httpMethod === 'POST':
+        return await repayApplicationHandler(event);
       default:
         return {
           statusCode: 404,
-          body: JSON.stringify({ error: 'Endpoint not found' }),
+          body: JSON.stringify({ error: 'Endpoint not found.' }),
         };
     }
   } catch (error) {
-    console.error('Error handling request:', error);
+    console.error('Handler error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Internal server error.' }),

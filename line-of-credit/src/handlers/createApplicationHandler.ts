@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from 'aws-lambda';
-import { query } from '../db';
 import { successResponse, errorResponse } from '../utils/response';
 import { validateCreateApplicationInput } from '../utils/validators';
+import { dbQuery } from '../utils/dbQuery';
 
 export const createApplicationHandler = async (event: APIGatewayEvent) => {
   try {
@@ -14,20 +14,18 @@ export const createApplicationHandler = async (event: APIGatewayEvent) => {
 
     const { userId, requestedAmount, expressDelivery } = body;
 
-    const result = await query(
+    const { success, rows, error } = await dbQuery(
       `INSERT INTO LineOfCreditApplications (user_id, requested_amount, state, express_delivery)
        VALUES ($1, $2, 'Open', $3) RETURNING *`,
       [userId, requestedAmount, expressDelivery || false]
     );
 
-    return successResponse(201, result.rows[0]);
-  } catch (error: any) {
-    console.error('Error in createApplicationHandler:', error);
-
-    if (error.code === '23505') {  // Example for PostgreSQL unique constraint error
-      return errorResponse(409, 'Duplicate application detected.');
+    if (!success) {
+      return errorResponse(500, error || 'Database query failed');
     }
-
+    return successResponse(201, rows?.[0] || {});
+  } catch (error) {
+    console.error('Unexpected error in createApplicationHandler:', error);
     return errorResponse(500, 'Internal server error.');
   }
 };
