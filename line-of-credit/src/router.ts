@@ -9,6 +9,10 @@ import { rejectApplicationHandler } from './handlers/rejectApplicationHandler';
 export const router = async (event: APIGatewayEvent) => {
   console.log('Received request:', event.httpMethod, event.path);
 
+  /* 
+  * Main routing logic. We recieve a request, and then route that request to the specific handler.
+  * Handlers are responsible for executing business logic. We have handlers for all API endpoints. 
+  */
   try {
     switch (true) {
       case event.path === '/createApplication' && event.httpMethod === 'POST':
@@ -23,6 +27,8 @@ export const router = async (event: APIGatewayEvent) => {
         return await viewApplicationHistoryHandler(event);
       case event.path === '/rejectApplication' && event.httpMethod === 'POST':
         return await rejectApplicationHandler(event);
+
+      // If endpoint is not valid, return 404. 
       default:
         return {
           statusCode: 404,
@@ -30,6 +36,7 @@ export const router = async (event: APIGatewayEvent) => {
         };
     }
   } catch (error) {
+    // Catch any errors returned by the handler. Return HTTP 500 to client.
     console.error('Handler error:', error);
     return {
       statusCode: 500,
