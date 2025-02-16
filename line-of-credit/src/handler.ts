@@ -3,6 +3,7 @@ import { createApplicationHandler } from './handlers/createApplicationHandler';
 import { disburseFundsHandler } from './handlers/disburseFundsHandler';
 import { repayApplicationHandler } from './handlers/repayApplicationHandler';
 import { cancelApplicationHandler } from './handlers/cancelApplicationHandler';
+import { viewApplicationHistoryHandler } from './handlers/viewApplicationHistoryHandler';
 
 export const handler = async (event: APIGatewayEvent) => {
   console.log('Received request:', event.httpMethod, event.path);
@@ -17,6 +18,8 @@ export const handler = async (event: APIGatewayEvent) => {
         return await repayApplicationHandler(event);
       case event.path === '/cancelApplication' && event.httpMethod === 'POST':
         return await cancelApplicationHandler(event);
+      case event.path === '/viewApplicationHistory' && event.httpMethod === 'POST':
+        return await viewApplicationHistoryHandler(event);
       default:
         return {
           statusCode: 404,
