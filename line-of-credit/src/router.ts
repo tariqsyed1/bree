@@ -4,8 +4,9 @@ import { disburseFundsHandler } from './handlers/disburseFundsHandler';
 import { repayApplicationHandler } from './handlers/repayApplicationHandler';
 import { cancelApplicationHandler } from './handlers/cancelApplicationHandler';
 import { viewApplicationHistoryHandler } from './handlers/viewApplicationHistoryHandler';
+import { rejectApplicationHandler } from './handlers/rejectApplicationHandler';
 
-export const handler = async (event: APIGatewayEvent) => {
+export const router = async (event: APIGatewayEvent) => {
   console.log('Received request:', event.httpMethod, event.path);
 
   try {
@@ -20,6 +21,8 @@ export const handler = async (event: APIGatewayEvent) => {
         return await cancelApplicationHandler(event);
       case event.path === '/viewApplicationHistory' && event.httpMethod === 'POST':
         return await viewApplicationHistoryHandler(event);
+      case event.path === '/rejectApplication' && event.httpMethod === 'POST':
+        return await rejectApplicationHandler(event);
       default:
         return {
           statusCode: 404,
