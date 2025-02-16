@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.0.14">
   <diagram name="Page-1" id="v4OusTVnB2c6mvOyYK9t">
-    <mxGraphModel dx="2058" dy="1139" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="782" dy="1139" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -61,7 +61,7 @@
         <mxCell id="LFQ0JxEmRbDi7rDfqKw2-17" value="&lt;b&gt;viewApplication&lt;/b&gt;(applicationId)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="700" y="708" width="180" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="LFQ0JxEmRbDi7rDfqKw2-24" value="&lt;b&gt;AWS RDS &lt;/b&gt;(PostgreSQL)" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.rds;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="1">
+        <mxCell id="LFQ0JxEmRbDi7rDfqKw2-24" value="&lt;b&gt;PostgreSQL&lt;/b&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.rds;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="1">
           <mxGeometry x="1020" y="476" width="72" height="81" as="geometry" />
         </mxCell>
         <mxCell id="LFQ0JxEmRbDi7rDfqKw2-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LFQ0JxEmRbDi7rDfqKw2-12" target="LFQ0JxEmRbDi7rDfqKw2-24">

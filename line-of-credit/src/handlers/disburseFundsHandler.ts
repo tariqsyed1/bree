@@ -4,7 +4,7 @@ import { dbQuery } from '../utils/dbQuery';
 
 /* Handles disbursement of funds from of credit application.
 * Transitions the application from "Open" to "Outstanding" if the disbursement condition is met
-*/ 
+*/
 export const disburseFundsHandler = async (event: APIGatewayEvent) => {
   try {
     const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;

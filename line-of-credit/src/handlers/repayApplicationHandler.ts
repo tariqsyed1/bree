@@ -2,16 +2,23 @@ import { APIGatewayEvent } from 'aws-lambda';
 import { successResponse, errorResponse } from '../utils/response';
 import { dbQuery } from '../utils/dbQuery';
 
+/**
+ * Handles repayment for an outstanding line of credit application.
+ * If the total repayment meets or exceeds the requested amount, the state transitions to "Repaid".
+ * @param {APIGatewayEvent} event - The API Gateway request event.
+ * @returns {Promise<object>} A success or error response.
+ */
 export const repayApplicationHandler = async (event: APIGatewayEvent) => {
   try {
     const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
     const { applicationId, repaymentAmount } = body;
 
+    // Validate input
     if (!applicationId || !repaymentAmount || isNaN(repaymentAmount) || repaymentAmount <= 0) {
       return errorResponse(400, 'applicationId and repaymentAmount (positive number) are required.');
     }
 
-    // Step 1: Fetch current state and total repayments
+    // Fetch current state and total repayments
     const { success: fetchSuccess, rows: fetchRows, error: fetchError } = await dbQuery(
       `SELECT state, requested_amount,
               COALESCE((SELECT SUM(amount) FROM Transactions WHERE application_id = $1 AND transaction_type = 'Repayment'), 0) AS total_repaid
@@ -29,7 +36,7 @@ export const repayApplicationHandler = async (event: APIGatewayEvent) => {
 
     const newTotalRepaid = parseFloat(application.total_repaid) + parseFloat(repaymentAmount);
 
-    // Step 2: Log the repayment as a transaction
+    // Log the repayment as a transaction
     const { success: insertSuccess, error: insertError } = await dbQuery(
       `INSERT INTO Transactions (application_id, transaction_type, amount) VALUES ($1, 'Repayment', $2)`,
       [applicationId, repaymentAmount]
@@ -37,7 +44,7 @@ export const repayApplicationHandler = async (event: APIGatewayEvent) => {
 
     if (!insertSuccess) return errorResponse(500, insertError || 'Database insert failed');
 
-    // Step 3: Check if repayment completes the requested amount and update state if needed
+    // Check if repayment completes the requested amount and update state if needed
     if (newTotalRepaid >= parseFloat(application.requested_amount)) {
       const { success: updateSuccess, error: updateError } = await dbQuery(
         `UPDATE LineOfCreditApplications SET state = 'Repaid', updated_at = NOW() WHERE application_id = $1`,
