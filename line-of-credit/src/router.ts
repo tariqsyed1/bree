@@ -6,13 +6,13 @@ import { cancelApplicationHandler } from './handlers/cancelApplicationHandler';
 import { viewApplicationHistoryHandler } from './handlers/viewApplicationHistoryHandler';
 import { rejectApplicationHandler } from './handlers/rejectApplicationHandler';
 
+/* 
+* Main routing logic. We recieve a request, and then route that request to the specific handler.
+* Handlers are responsible for executing business logic. We have handlers for all API endpoints. 
+*/
 export const router = async (event: APIGatewayEvent) => {
   console.log('Received request:', event.httpMethod, event.path);
 
-  /* 
-  * Main routing logic. We recieve a request, and then route that request to the specific handler.
-  * Handlers are responsible for executing business logic. We have handlers for all API endpoints. 
-  */
   try {
     switch (true) {
       case event.path === '/createApplication' && event.httpMethod === 'POST':
