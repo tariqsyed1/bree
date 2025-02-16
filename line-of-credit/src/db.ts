@@ -1,14 +1,10 @@
 import { Pool } from 'pg';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT),
+  connectionString: "postgresql://your_postgres_username:your_postgres_password@host.docker.internal:5432/line_of_credit",
 });
 
 export const query = (text: string, params?: any[]) => pool.query(text, params);

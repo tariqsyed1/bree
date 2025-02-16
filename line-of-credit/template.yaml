@@ -7,6 +7,7 @@ Resources:
       CodeUri: dist
       Handler: handler.handler
       Runtime: nodejs16.x
+      Timeout: 30
       Events:
         Api:
           Type: Api
@@ -16,3 +17,4 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: development
+          DATABASE_URL: postgresql://localhost:5432/line_of_credit
