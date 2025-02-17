@@ -26,7 +26,7 @@ export const disburseFundsHandler = async (event: APIGatewayEvent) => {
 
     // Ensure that the application is in the "Open" state before distributing
     const application = fetchRows[0];
-    if (application.state !== 'Open') {
+    if (application.state !== 'Open' && application.state !== 'Outstanding' && application.state !== 'Repaid') {
       return errorResponse(400, `Cannot disburse funds for an application in ${application.state} state.`);
     }
 
